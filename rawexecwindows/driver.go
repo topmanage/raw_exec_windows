@@ -1,9 +1,13 @@
-package cco
+package rawexecwindows
 
 import (
-	"bitbucket.org/topmanage-software-engineering/nomad-taskdriver-cco/src/executor"
 	"context"
 	"fmt"
+	"os"
+	"path/filepath"
+	"strconv"
+	"time"
+
 	"github.com/hashicorp/consul-template/signals"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/nomad/client/lib/cpustats"
@@ -13,10 +17,7 @@ import (
 	"github.com/hashicorp/nomad/plugins/drivers"
 	"github.com/hashicorp/nomad/plugins/shared/hclspec"
 	pstructs "github.com/hashicorp/nomad/plugins/shared/structs"
-	"os"
-	"path/filepath"
-	"strconv"
-	"time"
+	"github.com/topmanage/raw_exec_windows/executor"
 )
 
 const (
@@ -32,27 +33,27 @@ const (
 )
 
 var (
-	// PluginID is the cco plugin metadata registered in the plugin
+	// PluginID is the rawexecwindows plugin metadata registered in the plugin
 	// catalog.
 	PluginID = loader.PluginID{
 		Name:       pluginName,
 		PluginType: base.PluginTypeDriver,
 	}
 
-	// PluginConfig is the cco factory function registered in the
+	// PluginConfig is the rawexecwindows factory function registered in the
 	// plugin catalog.
 	PluginConfig = &loader.InternalPluginConfig{
 		Config:  map[string]interface{}{},
-		Factory: func(ctx context.Context, l hclog.Logger) interface{} { return NewCcoDriver(ctx, l) },
+		Factory: func(ctx context.Context, l hclog.Logger) interface{} { return NewRawExecWindowsDriver(ctx, l) },
 	}
 
-	errDisabledDriver = fmt.Errorf("cco is disabled")
+	errDisabledDriver = fmt.Errorf("rawexecwindows is disabled")
 )
 
 // PluginLoader maps pre-0.9 client driver options to post-0.9 plugin options.
 func PluginLoader(opts map[string]string) (map[string]interface{}, error) {
 	conf := map[string]interface{}{}
-	if v, err := strconv.ParseBool(opts["driver.cco.enable"]); err == nil {
+	if v, err := strconv.ParseBool(opts["driver.rawexecwindows.enable"]); err == nil {
 		conf["enabled"] = v
 	}
 	return conf, nil
@@ -126,7 +127,7 @@ type Driver struct {
 
 // Config is the driver configuration set by the SetConfig RPC call
 type Config struct {
-	// Enabled is set to true to enable the cco driver
+	// Enabled is set to true to enable the rawexecwindows driver
 	Enabled bool `codec:"enabled"`
 }
 
@@ -146,8 +147,7 @@ type TaskState struct {
 	StartedAt      time.Time
 }
 
-// NewCcoDriver returns a new DriverPlugin implementation
-func NewCcoDriver(ctx context.Context, logger hclog.Logger) drivers.DriverPlugin {
+func NewRawExecWindowsDriver(ctx context.Context, logger hclog.Logger) drivers.DriverPlugin {
 	logger = logger.Named(pluginName)
 	return &Driver{
 		eventer: eventer.NewEventer(ctx, logger),
@@ -219,7 +219,7 @@ func (d *Driver) buildFingerprint() *drivers.Fingerprint {
 	if d.config.Enabled {
 		health = drivers.HealthStateHealthy
 		desc = drivers.DriverHealthy
-		attrs["driver.cco"] = pstructs.NewBoolAttribute(true)
+		attrs["driver.rawexecwindows"] = pstructs.NewBoolAttribute(true)
 	} else {
 		health = drivers.HealthStateUndetected
 		desc = "disabled"

@@ -1,4 +1,4 @@
-package cco
+package rawexecwindows
 
 import (
 	"sync"

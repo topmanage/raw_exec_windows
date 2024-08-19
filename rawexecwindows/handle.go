@@ -1,4 +1,4 @@
-package cco
+package rawexecwindows
 
 import (
 	"context"
@@ -6,10 +6,10 @@ import (
 	"sync"
 	"time"
 
-	"bitbucket.org/topmanage-software-engineering/nomad-taskdriver-cco/src/executor"
 	hclog "github.com/hashicorp/go-hclog"
 	plugin "github.com/hashicorp/go-plugin"
 	"github.com/hashicorp/nomad/plugins/drivers"
+	"github.com/topmanage/raw_exec_windows/executor"
 )
 
 type taskHandle struct {

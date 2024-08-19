@@ -3,9 +3,9 @@ package main
 import (
 	"context"
 
-	"bitbucket.org/topmanage-software-engineering/nomad-taskdriver-cco/src/cco"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/nomad/plugins"
+	"github.com/topmanage/raw_exec_windows/rawexecwindows"
 )
 
 func main() {
@@ -16,5 +16,5 @@ func main() {
 // factory returns a new instance of a nomad driver plugin
 func factory(log hclog.Logger) interface{} {
 	ctx := context.Background()
-	return cco.NewCcoDriver(ctx, log)
+	return rawexecwindows.NewRawExecWindowsDriver(ctx, log)
 }

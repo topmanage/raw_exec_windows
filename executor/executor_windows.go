@@ -160,7 +160,9 @@ func (e *UniversalExecutor) sendShutdown(proc *os.Process) error {
 	url := "http://127.0.0.1:9977/shutdown"
 	method := "POST"
 	payload := []byte{}
-	client := &http.Client{}
+	client := &http.Client{
+		Timeout: time.Second * 5,
+	}
 	req, _ := http.NewRequest(method, url, bytes.NewBuffer(payload))
 
 	req.Header.Set("Content-Type", "application/json")
@@ -171,10 +173,6 @@ func (e *UniversalExecutor) sendShutdown(proc *os.Process) error {
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("Error returned non 200 code: %v", err)
-	}
-	time.Sleep(time.Second * 40)
-	if err := e.killProcessTree(proc); err != nil {
-		return err
 	}
 	return nil
 }

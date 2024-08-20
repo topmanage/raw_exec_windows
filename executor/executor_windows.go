@@ -144,9 +144,9 @@ func (e *UniversalExecutor) shutdownProcess(s os.Signal, proc *os.Process) error
 		if err := sendCtrlBreak(proc.Pid); err != nil {
 			return fmt.Errorf("executor shutdown error: %v", err)
 		}
-		// if err := e.sendShutdown(proc); err != nil {
-		// 	return err
-		// }
+		if err := e.sendShutdown(proc); err != nil {
+			return err
+		}
 	} else {
 		if err := sendCtrlBreak(proc.Pid); err != nil {
 			return fmt.Errorf("executor shutdown error: %v", err)

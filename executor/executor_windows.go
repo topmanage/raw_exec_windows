@@ -116,20 +116,20 @@ func (e *UniversalExecutor) killProcessTree(proc *os.Process) error {
 	// Get all child process IDs (including descendants)
 	childPids, err := getChildProcessesRecursive(proc.Pid)
 	if err != nil {
-		return fmt.Errorf("Error getting child processes: %v", err)
+		e.logger.Warn("Error gettings child processes: %v", err)
 	}
 
 	// Kill each process and ignore any errors
 	for _, pid := range childPids {
 		err := killProcess(pid)
 		if err != nil {
-			return fmt.Errorf("Error killing child processes: %v", err)
+			e.logger.Warn("Error killing process: %v", err)
 		}
 	}
 
 	err = killProcess(proc.Pid)
 	if err != nil {
-		return fmt.Errorf("Error killing parent process: %v", err)
+		e.logger.Warn("Error killing process: %v", err)
 	}
 	return nil
 }
@@ -144,9 +144,9 @@ func (e *UniversalExecutor) shutdownProcess(s os.Signal, proc *os.Process) error
 		if err := sendCtrlBreak(proc.Pid); err != nil {
 			return fmt.Errorf("executor shutdown error: %v", err)
 		}
-		if err := e.sendShutdown(proc); err != nil {
-			return err
-		}
+		// if err := e.sendShutdown(proc); err != nil {
+		// 	return err
+		// }
 	} else {
 		if err := sendCtrlBreak(proc.Pid); err != nil {
 			return fmt.Errorf("executor shutdown error: %v", err)

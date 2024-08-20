@@ -594,16 +594,16 @@ func (e *UniversalExecutor) Shutdown(signal string, grace time.Duration) error {
 		select {
 		case <-e.processExited:
 		case <-time.After(grace):
-			proc.Kill()
+			if err = e.killProcessTree(proc); err != nil {
+				e.logger.Warn("failed to shutdown process group", "pid", proc.Pid, "error", err)
+			}
 		}
 	} else {
-		proc.Kill()
+		if err = e.killProcessTree(proc); err != nil {
+			e.logger.Warn("failed to shutdown process group", "pid", proc.Pid, "error", err)
+		}
 	}
-
 	// Issue sigkill to the process group (if possible)
-	if err = e.killProcessTree(proc); err != nil {
-		e.logger.Warn("failed to shutdown process group", "pid", proc.Pid, "error", err)
-	}
 
 	// Wait for process to exit
 	select {

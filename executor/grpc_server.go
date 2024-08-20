@@ -13,10 +13,10 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/hashicorp/nomad/drivers/shared/executor/proto"
 	"github.com/hashicorp/nomad/nomad/structs"
 	"github.com/hashicorp/nomad/plugins/drivers"
 	sproto "github.com/hashicorp/nomad/plugins/shared/structs/proto"
+	"github.com/topmanage/raw_exec_windows/executor/proto"
 )
 
 type grpcExecutorServer struct {
@@ -27,6 +27,7 @@ func (s *grpcExecutorServer) Launch(ctx context.Context, req *proto.LaunchReques
 	ps, err := s.impl.Launch(&ExecCommand{
 		Cmd:              req.Cmd,
 		Args:             req.Args,
+		ShutdownURL:      req.ShutdownUrl,
 		Resources:        drivers.ResourcesFromProto(req.Resources),
 		StdoutPath:       req.StdoutPath,
 		StderrPath:       req.StderrPath,

@@ -15,10 +15,10 @@ import (
 	"github.com/golang/protobuf/ptypes"
 	hclog "github.com/hashicorp/go-hclog"
 	cstructs "github.com/hashicorp/nomad/client/structs"
-	"github.com/hashicorp/nomad/drivers/shared/executor/proto"
 	"github.com/hashicorp/nomad/helper/pluginutils/grpcutils"
 	"github.com/hashicorp/nomad/plugins/drivers"
 	dproto "github.com/hashicorp/nomad/plugins/drivers/proto"
+	"github.com/topmanage/raw_exec_windows/executor/proto"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -38,6 +38,7 @@ func (c *grpcExecutorClient) Launch(cmd *ExecCommand) (*ProcessState, error) {
 	req := &proto.LaunchRequest{
 		Cmd:              cmd.Cmd,
 		Args:             cmd.Args,
+		ShutdownUrl:      cmd.ShutdownURL,
 		Resources:        drivers.ResourcesToProto(cmd.Resources),
 		StdoutPath:       cmd.StdoutPath,
 		StderrPath:       cmd.StderrPath,

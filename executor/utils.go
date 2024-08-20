@@ -13,8 +13,8 @@ import (
 	hclog "github.com/hashicorp/go-hclog"
 	plugin "github.com/hashicorp/go-plugin"
 	"github.com/hashicorp/nomad/client/lib/cpustats"
-	"github.com/hashicorp/nomad/drivers/shared/executor/proto"
 	"github.com/hashicorp/nomad/plugins/base"
+	"github.com/topmanage/raw_exec_windows/executor/proto"
 )
 
 const (

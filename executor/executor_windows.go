@@ -136,7 +136,7 @@ func (e *UniversalExecutor) killProcessTree(proc *os.Process) error {
 
 // Send the process a Ctrl-Break event, allowing it to shutdown by itself
 // before being Terminate.
-func (e *UniversalExecutor) shutdownProcess(s os.Signal, proc *os.Process) error {
+func (e *UniversalExecutor) shutdownProcess(s os.Signal, proc *os.Process, shutdownUrl *string) error {
 	if s == nil {
 		s = os.Kill
 	}
@@ -144,8 +144,10 @@ func (e *UniversalExecutor) shutdownProcess(s os.Signal, proc *os.Process) error
 		if err := sendCtrlBreak(proc.Pid); err != nil {
 			return fmt.Errorf("executor shutdown error: %v", err)
 		}
-		if err := e.sendShutdown(proc); err != nil {
-			return err
+		if shutdownUrl != nil {
+			if err := e.sendShutdown(proc, *shutdownUrl); err != nil {
+				return err
+			}
 		}
 	} else {
 		if err := sendCtrlBreak(proc.Pid); err != nil {
@@ -156,8 +158,7 @@ func (e *UniversalExecutor) shutdownProcess(s os.Signal, proc *os.Process) error
 	return nil
 }
 
-func (e *UniversalExecutor) sendShutdown(proc *os.Process) error {
-	url := "http://127.0.0.1:9977/shutdown"
+func (e *UniversalExecutor) sendShutdown(proc *os.Process, url string) error {
 	method := "POST"
 	payload := []byte{}
 	client := &http.Client{

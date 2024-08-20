@@ -79,8 +79,9 @@ var (
 	// taskConfigSpec is the hcl specification for the driver config section of
 	// a task within a job. It is returned in the TaskConfigSchema RPC
 	taskConfigSpec = hclspec.NewObject(map[string]*hclspec.Spec{
-		"command": hclspec.NewAttr("command", "string", true),
-		"args":    hclspec.NewAttr("args", "list(string)", false),
+		"command":      hclspec.NewAttr("command", "string", true),
+		"args":         hclspec.NewAttr("args", "list(string)", false),
+		"shutdown_url": hclspec.NewAttr("shutdown_url", "string", false),
 	})
 
 	// capabilities is returned by the Capabilities RPC and indicates what

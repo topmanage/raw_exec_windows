@@ -104,6 +104,9 @@ type ExecCommand struct {
 	// Args is the args of the command that the user wants to run.
 	Args []string
 
+	// HTTP Post URL to send POST for applications that need this for graceful shutdown
+	ShutdownURL *string
+
 	// Resources defined by the task
 	Resources *drivers.Resources
 
@@ -586,7 +589,7 @@ func (e *UniversalExecutor) Shutdown(signal string, grace time.Duration) error {
 
 		e.logger.Info("PROCESS ID: ", proc.Pid)
 
-		if err := e.shutdownProcess(sig, proc); err != nil {
+		if err := e.shutdownProcess(sig, proc, e.command.ShutdownURL); err != nil {
 			e.logger.Warn("failed to shutdown process", "pid", proc.Pid, "error", err)
 			return err
 		}

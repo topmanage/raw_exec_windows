@@ -9,7 +9,7 @@ import (
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-plugin"
 	"github.com/hashicorp/nomad/client/lib/cpustats"
-	"github.com/hashicorp/nomad/drivers/shared/executor/proto"
+	"github.com/topmanage/raw_exec_windows/executor/proto"
 	"google.golang.org/grpc"
 )
 

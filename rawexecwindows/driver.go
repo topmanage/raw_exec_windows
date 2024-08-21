@@ -134,8 +134,9 @@ type Config struct {
 
 // TaskConfig is the driver configuration of a task within a job
 type TaskConfig struct {
-	Command string   `codec:"command"`
-	Args    []string `codec:"args"`
+	Command     string   `codec:"command"`
+	Args        []string `codec:"args"`
+	ShutdownUrl *string  `codec:"shutdown_url,omitempty"`
 }
 
 // TaskState is the state which is encoded in the handle returned in

@@ -105,7 +105,7 @@ type ExecCommand struct {
 	Args []string
 
 	// HTTP Post URL to send POST for applications that need this for graceful shutdown
-	ShutdownURL *string
+	ShutdownURL string
 
 	// Resources defined by the task
 	Resources *drivers.Resources

@@ -136,7 +136,7 @@ type Config struct {
 type TaskConfig struct {
 	Command     string   `codec:"command"`
 	Args        []string `codec:"args"`
-	ShutdownUrl *string  `codec:"shutdown_url,omitempty"`
+	ShutdownUrl string   `codec:"shutdown_url"`
 }
 
 // TaskState is the state which is encoded in the handle returned in

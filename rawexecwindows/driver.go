@@ -324,6 +324,7 @@ func (d *Driver) StartTask(cfg *drivers.TaskConfig) (*drivers.TaskHandle, *drive
 	execCmd := &executor.ExecCommand{
 		Cmd:              driverConfig.Command,
 		Args:             driverConfig.Args,
+		ShutdownURL:      driverConfig.ShutdownUrl,
 		Env:              cfg.EnvList(),
 		User:             cfg.User,
 		TaskDir:          cfg.TaskDir().Dir,

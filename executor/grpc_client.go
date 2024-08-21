@@ -38,7 +38,7 @@ func (c *grpcExecutorClient) Launch(cmd *ExecCommand) (*ProcessState, error) {
 	req := &proto.LaunchRequest{
 		Cmd:              cmd.Cmd,
 		Args:             cmd.Args,
-		ShutdownUrl:      cmd.ShutdownURL,
+		ShutdownUrl:      cmd.ShutdownUrl,
 		Resources:        drivers.ResourcesToProto(cmd.Resources),
 		StdoutPath:       cmd.StdoutPath,
 		StderrPath:       cmd.StderrPath,

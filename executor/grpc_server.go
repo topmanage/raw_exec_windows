@@ -27,7 +27,7 @@ func (s *grpcExecutorServer) Launch(ctx context.Context, req *proto.LaunchReques
 	ps, err := s.impl.Launch(&ExecCommand{
 		Cmd:              req.Cmd,
 		Args:             req.Args,
-		ShutdownURL:      req.ShutdownUrl,
+		ShutdownUrl:      req.ShutdownUrl,
 		Resources:        drivers.ResourcesFromProto(req.Resources),
 		StdoutPath:       req.StdoutPath,
 		StderrPath:       req.StderrPath,

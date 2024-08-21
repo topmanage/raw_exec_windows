@@ -105,7 +105,7 @@ type ExecCommand struct {
 	Args []string
 
 	// HTTP Post URL to send POST for applications that need this for graceful shutdown
-	ShutdownURL string
+	ShutdownUrl string
 
 	// Resources defined by the task
 	Resources *drivers.Resources
@@ -312,7 +312,6 @@ func (e *UniversalExecutor) Version() (*ExecutorVersion, error) {
 // configures an applies isolation on certain platforms.
 func (e *UniversalExecutor) Launch(command *ExecCommand) (*ProcessState, error) {
 	e.logger.Trace("preparing to launch command", "command", command.Cmd, "args", strings.Join(command.Args, " "))
-
 	e.command = command
 
 	// setting the user of the process
@@ -589,7 +588,7 @@ func (e *UniversalExecutor) Shutdown(signal string, grace time.Duration) error {
 
 		e.logger.Info("PROCESS ID: ", proc.Pid)
 
-		if err := e.shutdownProcess(sig, proc, e.command.ShutdownURL); err != nil {
+		if err := e.shutdownProcess(sig, proc, e.command.ShutdownUrl); err != nil {
 			e.logger.Warn("failed to shutdown process", "pid", proc.Pid, "error", err)
 			return err
 		}

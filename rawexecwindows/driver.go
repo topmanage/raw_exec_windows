@@ -413,7 +413,7 @@ func (d *Driver) StopTask(taskID string, timeout time.Duration, signal string) e
 		return drivers.ErrTaskNotFound
 	}
 
-	if err := handle.exec.Shutdown(signal, timeout); err != nil {
+	if err := handle.exec.Shutdown(signal, timeout, handle.taskConfig.Name); err != nil {
 		if handle.pluginClient.Exited() {
 			return nil
 		}

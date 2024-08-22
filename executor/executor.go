@@ -67,7 +67,7 @@ type Executor interface {
 	// given grace period, the process is forcefully killed.
 	//
 	// To force kill the user process, gracePeriod can be set to 0.
-	Shutdown(signal string, gracePeriod time.Duration) error
+	Shutdown(signal string, gracePeriod time.Duration, taskName string) error
 
 	// UpdateResources updates any resource isolation enforcement with new
 	// constraints if supported.
@@ -550,10 +550,9 @@ var (
 
 // Shutdown cleans up the alloc directory, destroys resource container and
 // kills the user process.
-func (e *UniversalExecutor) Shutdown(signal string, grace time.Duration) error {
+func (e *UniversalExecutor) Shutdown(signal string, grace time.Duration, taskName string) error {
 	e.logger.Debug("shutdown requested", "signal", signal, "grace_period_ms", grace.Round(time.Millisecond))
 	var merr multierror.Error
-
 	// If the executor did not launch a process, return.
 	if e.command == nil {
 		return nil
@@ -588,7 +587,7 @@ func (e *UniversalExecutor) Shutdown(signal string, grace time.Duration) error {
 
 		e.logger.Info("PROCESS ID: ", proc.Pid)
 
-		if err := e.shutdownProcess(sig, proc, e.command.ShutdownUrl); err != nil {
+		if err := e.shutdownProcess(sig, proc, e.command.ShutdownUrl, taskName); err != nil {
 			e.logger.Warn("failed to shutdown process", "pid", proc.Pid, "error", err)
 			return err
 		}

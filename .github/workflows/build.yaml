@@ -98,3 +98,12 @@ jobs:
           tag_name: nightly
           files: ${{ env.PKG_NAME }}_${{ needs.get-product-version.outputs.product-version }}_${{ matrix.goos }}_${{ matrix.goarch }}.zip
           fail_on_unmatched_files: true
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          prerelease: true
+          name: ${{ needs.get-product-version.outputs.product-version }}
+          tag_name: ${{ needs.get-product-version.outputs.product-version }}
+          files: ${{ env.PKG_NAME }}_${{ needs.get-product-version.outputs.product-version }}_${{ matrix.goos }}_${{ matrix.goarch }}.zip
+          fail_on_unmatched_files: true

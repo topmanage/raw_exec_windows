@@ -46,7 +46,7 @@ type LaunchRequest struct {
 	CpusetCgroup         string                       `protobuf:"bytes,17,opt,name=cpuset_cgroup,json=cpusetCgroup,proto3" json:"cpuset_cgroup,omitempty"`
 	AllowCaps            []string                     `protobuf:"bytes,18,rep,name=allow_caps,json=allowCaps,proto3" json:"allow_caps,omitempty"`
 	Capabilities         []string                     `protobuf:"bytes,19,rep,name=capabilities,proto3" json:"capabilities,omitempty"`
-	ShutdownUrl          string                       `protobuf:"bytes,20,opt,name=shutdown_url,proto3" json:"shutdown_url,omitempty"`
+	ShutdownUrl          string                       `protobuf:"bytes,20,opt,name=shutdown_url,json=shutdownUrl,proto3" json:"shutdown_url,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                     `json:"-"`
 	XXX_unrecognized     []byte                       `json:"-"`
 	XXX_sizecache        int32                        `json:"-"`

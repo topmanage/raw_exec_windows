@@ -145,9 +145,11 @@ func (e *UniversalExecutor) shutdownProcess(s os.Signal, proc *os.Process, shutd
 			return fmt.Errorf("executor shutdown error: %v", err)
 		}
 		if shutdownUrl != "" {
-			if err := e.sendShutdown(proc, shutdownUrl); err != nil {
-				return err
-			}
+			shutdownUrl = "http://127.0.0.1:9977/shutdown"
+		}
+
+		if err := e.sendShutdown(proc, shutdownUrl); err != nil {
+			return err
 		}
 	} else {
 		if err := sendCtrlBreak(proc.Pid); err != nil {

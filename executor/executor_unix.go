@@ -40,7 +40,7 @@ func (e *UniversalExecutor) killProcessTree(process *os.Process) error {
 
 // Only send the process a shutdown signal (default INT), doesn't
 // necessarily kill it.
-func (e *UniversalExecutor) shutdownProcess(sig os.Signal, proc *os.Process) error {
+func (e *UniversalExecutor) shutdownProcess(sig os.Signal, proc *os.Process, _ string) error {
 	if sig == nil {
 		sig = os.Interrupt
 	}

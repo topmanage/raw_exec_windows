@@ -314,10 +314,6 @@ func (e *UniversalExecutor) Launch(command *ExecCommand) (*ProcessState, error) 
 	e.logger.Trace("preparing to launch command", "command", command.Cmd, "args", strings.Join(command.Args, " "), "shutdown_url", command.ShutdownUrl)
 	e.command = command
 
-	if command.ShutdownUrl == "" {
-		return nil, fmt.Errorf("e")
-	}
-
 	// setting the user of the process
 	if command.User != "" {
 		e.logger.Debug("running command as user", "user", command.User)

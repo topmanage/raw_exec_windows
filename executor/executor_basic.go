@@ -9,7 +9,7 @@ import (
 	"os/exec"
 
 	"github.com/hashicorp/go-hclog"
-	"github.com/hashicorp/go-set/v2"
+	"github.com/hashicorp/go-set/v3"
 	"github.com/hashicorp/nomad/client/lib/cpustats"
 	"github.com/hashicorp/nomad/drivers/shared/executor/procstats"
 	"github.com/hashicorp/nomad/plugins/drivers"
@@ -36,10 +36,10 @@ func withNetworkIsolation(f func() error, _ *drivers.NetworkIsolationSpec) error
 
 func setCmdUser(*exec.Cmd, string) error { return nil }
 
-func (e *UniversalExecutor) ListProcesses() *set.Set[int] {
-	return procstats.List(e.childCmd.Process.Pid)
-}
-
 func (e *UniversalExecutor) setSubCmdCgroup(*exec.Cmd, string) (func(), error) {
 	return func() {}, nil
+}
+
+func (e *UniversalExecutor) ListProcesses() set.Collection[procstats.ProcessID] {
+	return procstats.ListByPid(e.childCmd.Process.Pid)
 }

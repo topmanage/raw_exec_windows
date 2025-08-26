@@ -12,7 +12,7 @@ env:
 jobs:
   get-go-version:
     name: "Determine Go toolchain version"
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     outputs:
       go-version: ${{ steps.get-go-version.outputs.go-version }}
     steps:
@@ -24,7 +24,7 @@ jobs:
           echo "::set-output name=go-version::$(cat .go-version)"
 
   get-product-version:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     outputs:
       product-version: ${{ steps.get-product-version.outputs.product-version }}
     steps:
@@ -37,7 +37,7 @@ jobs:
 
   generate-metadata-file:
     needs: get-product-version
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     outputs:
       filepath: ${{ steps.generate-metadata-file.outputs.filepath }}
     steps:
@@ -50,7 +50,7 @@ jobs:
           version: ${{ needs.get-product-version.outputs.product-version }}
           product: ${{ env.PKG_NAME }}
           repositoryOwner: "HaimKortovichTM"
-      - uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # v3.1.2
+      - uses: actions/upload-artifact@v4
         if: ${{ !env.ACT }}
         with:
           name: metadata.json
@@ -84,7 +84,7 @@ jobs:
           mv \
             pkg/${{ matrix.goos }}_${{ matrix.goarch }}.zip \
             ${{ env.PKG_NAME }}_${{ needs.get-product-version.outputs.product-version }}_${{ matrix.goos }}_${{ matrix.goarch }}.zip
-      - uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # v3.1.2
+      - uses: actions/upload-artifact@v4
         if: ${{ !env.ACT }}
         with:
           name: ${{ env.PKG_NAME }}_${{ needs.get-product-version.outputs.product-version }}_${{ matrix.goos }}_${{ matrix.goarch }}.zip
